@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	getLogs "webhook/client-go"
 )
 
 func main() {
@@ -28,6 +29,10 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 	// Print the request body
 	fmt.Println("Received webhook payload:")
 	fmt.Println(string(body))
+
+	fmt.Println("Here is the logs\n\n\n")
+
+	getLogs.GetLogs()
 
 	// Respond with HTTP status 200 OK
 	w.WriteHeader(http.StatusOK)
