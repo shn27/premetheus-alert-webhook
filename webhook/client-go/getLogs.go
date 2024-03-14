@@ -21,6 +21,7 @@ import (
 )
 
 func GetLogs() {
+	namespace := "default"
 	kubeconfig := flag.String("kubeconfig", "/home/sohan/.kube/config", "location to your kubeconfig file")
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
@@ -35,7 +36,7 @@ func GetLogs() {
 	//for {
 	// get pods in all the namespaces by omitting namespace
 	// Or specify namespace to get pods in particular namespace
-	pods, err := clientset.CoreV1().Pods("default").List(context.Background(), metav1.ListOptions{})
+	pods, err := clientset.CoreV1().Pods(namespace).List(context.Background(), metav1.ListOptions{})
 	if err != nil {
 		fmt.Printf("error %s, getting pods", err.Error())
 	}
@@ -60,9 +61,13 @@ func GetLogs() {
 	//}
 }
 
+func intToPtr(x int64) *int64 {
+	return &x
+}
+
 func getPodLogs(pod v1.Pod, config *rest.Config) string {
 	fmt.Printf("hello world")
-	podLogOpts := v1.PodLogOptions{}
+	podLogOpts := v1.PodLogOptions{TailLines: intToPtr(10)} // For last 10 lines
 	//kubeconfig := flag.String("kubeconfig", "/home/sohan/.kube/config", "location to your kubeconfig file")
 	//config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	//if err != nil {
