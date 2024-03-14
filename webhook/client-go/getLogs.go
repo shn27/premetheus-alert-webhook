@@ -37,7 +37,7 @@ func GetLogs() {
 	// Or specify namespace to get pods in particular namespace
 	pods, err := clientset.CoreV1().Pods("default").List(context.Background(), metav1.ListOptions{})
 	if err != nil {
-		fmt.Printf("error %s, getting inclusterconfig", err.Error())
+		fmt.Printf("error %s, getting pods", err.Error())
 	}
 	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
 
@@ -47,6 +47,10 @@ func GetLogs() {
 	}
 	fmt.Printf("Deployment are: \n")
 	deployments, err := clientset.AppsV1().Deployments("default").List(context.Background(), metav1.ListOptions{})
+
+	if err != nil {
+		fmt.Printf("error %s, getting pods", err.Error())
+	}
 
 	for _, dep := range deployments.Items {
 		fmt.Println("%s", dep.Name)
